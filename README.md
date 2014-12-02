@@ -11,7 +11,7 @@ Instructions
 
     ```
     curl -#o install \
-    https://raw.githubusercontent.com/lamassu/lamassu-install/master/install && \
+    https://raw.githubusercontent.com/lamassu/lamassu-install/install-1.0.2/install && \
     bash install
     ```
 
