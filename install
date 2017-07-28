@@ -60,8 +60,6 @@ if [ "$(whoami)" != "root" ]; then
 fi
 
 debug="lamassu-debug.log"
-prefix="/usr/local"
-node="http://nodejs.org/dist/v0.10.32/node-v0.10.32-linux-x64.tar.gz"
 
 # First detect our package manager. Fail early if we don't support it.
 update=""
@@ -74,7 +72,7 @@ if exists apt-get; then
   upgrade="apt-get upgrade -y"
   install="
     apt-get update -y &&
-    apt-get install -y  postgresql postgresql-contrib libpq-dev git build-essential python curl &&
+    apt-get install -y  nodejs postgresql postgresql-contrib libpq-dev git build-essential python curl &&
     /etc/init.d/postgresql start
   "
 fi
@@ -123,6 +121,8 @@ eval $upgrade >> $debug 2>&1
 
 [ $? -ne 0 ] && fail "Updating your system failed"
 
+curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+
 # Install PostgreSQL with the package manager we found.
 echo
 echo "Installing PostgreSQL (this might take a while)..."
@@ -141,13 +141,6 @@ su - postgres >> $debug 2>&1 <<EOF
 EOF
 
 echo "{\"postgresql\":\"postgres://lamassu:$password@localhost/lamassu\"}" > /etc/lamassu.json
-
-echo "Fetching and installing node.js..."
-
-# Install node in $prefix
-curl "$node" | tar -C"$prefix" --strip-components=1 -zxf-
-
-[ $? -ne 0 ] && fail "Node.js installation failed"
 
 echo "Installing Lamassu stack (this might take a while)..."
 # Install Lamassu stack
@@ -188,8 +181,10 @@ openssl req -new -newkey rsa:8092 -days 9999 -nodes -x509 -subj "/C=US/ST=/L=/O=
 chmod 600 /root/{*.key,*.crt}
 
 ORIG_PWD=$(pwd)
-cd /usr/local/lib/node_modules/lamassu-server
-/usr/local/bin/migrate
+NODE_MODULES=$(npm -g root)
+BIN=$(npm -g bin)
+cd "$NODE_MODULES/lamassu-server"
+"$BIN/migrate"
 cd $ORIG_PWD
 
 echo "Starting Lamassu services..."
