@@ -185,8 +185,5 @@ stdout_logfile=/var/log/supervisor/lamassu-admin-server.out.log
 environment=HOME="/root"
 EOF
 
+#Run the daemons!
 service supervisor restart 
-
-
-#Run the server!
-sudo nohup /home/ubuntu/.nvm/versions/node/v8.10.0/bin/node /home/ubuntu/.nvm/versions/node/v8.10.0/bin/lamassu-admin-server > /tmp/lamassu.log 2>&1  &
