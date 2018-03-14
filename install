@@ -161,6 +161,32 @@ sudo /home/ubuntu/.nvm/versions/node/v8.10.0/bin/node /home/ubuntu/.nvm/versions
 ADMIN_REGISTRATION_URL=`lamassu-register admin`
 echo $ADMIN_REGISTRATION_URL 
 
+##
+# Install supervisor to run processes as deamons
+##
+
+cat <<EOF > /etc/supervisor/conf.d/lamassu-server.conf
+[program:lamassu-server]
+command=/home/ubuntu/.nvm/versions/node/v8.10.0/bin/node /home/ubuntu/.nvm/versions/node/v8.10.0/bin/lamassu-server
+autostart=true
+autorestart=true
+stderr_logfile=/var/log/supervisor/lamassu-server.err.log
+stdout_logfile=/var/log/supervisor/lamassu-server.out.log
+environment=HOME="/root"
+EOF
+
+cat <<EOF > /etc/supervisor/conf.d/lamassu-admin-server.conf
+[program:lamassu-admin-server]
+command=/home/ubuntu/.nvm/versions/node/v8.10.0/bin/node /home/ubuntu/.nvm/versions/node/v8.10.0/bin/lamassu-server
+autostart=true
+autorestart=true
+stderr_logfile=/var/log/supervisor/lamassu-admin-server.err.log
+stdout_logfile=/var/log/supervisor/lamassu-admin-server.out.log
+environment=HOME="/root"
+EOF
+
+service supervisor restart 
+
 
 #Run the server!
 sudo nohup /home/ubuntu/.nvm/versions/node/v8.10.0/bin/node /home/ubuntu/.nvm/versions/node/v8.10.0/bin/lamassu-admin-server > /tmp/lamassu.log 2>&1  &
