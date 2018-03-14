@@ -160,5 +160,4 @@ echo $ADMIN_REGISTRATION_URL
 
 
 #Run the server!
-sudo nohup /home/ubuntu/.nvm/versions/node/v8.10.0/bin/node /home/ubuntu/.nvm/versions/node/v8.10.0/bin/lamassu-admin-server 
-
+sudo nohup /home/ubuntu/.nvm/versions/node/v8.10.0/bin/node /home/ubuntu/.nvm/versions/node/v8.10.0/bin/lamassu-admin-server > /tmp/lamassu.log 2>&1  &
