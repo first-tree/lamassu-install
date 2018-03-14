@@ -143,11 +143,11 @@ sudo /home/ubuntu/.nvm/versions/node/v8.10.0/bin/node /home/ubuntu/.nvm/versions
 
 #Run the admin server via HTTPS
 
-#Get the 
+#Get the One-time URL for the admin
 ADMIN_REGISTRATION_URL=`lamassu-register admin`
 echo $ADMIN_REGISTRATION_URL 
 
 
-sudo apt install links
-
+#Run the server!
+sudo nohup /home/ubuntu/.nvm/versions/node/v8.10.0/bin/node /home/ubuntu/.nvm/versions/node/v8.10.0/bin/lamassu-admin-server 
 
